@@ -23,3 +23,19 @@ books = sa.Table(
     sa.Column("price", sa.Float, nullable=False),
     sa.Column("created_at", sa.DateTime, nullable=False),
 )
+
+
+ordered_books = sa.Table(
+    metadata,
+    sa.Column("book_id", sa.ForeignKey("books.id")),
+    sa.Column("order_id", sa.ForeignKey("orders.id")),
+)
+
+
+orders = sa.Table(
+    metadata,
+    sa.Column(
+        "id", UUID(as_uuid=True), nullable=False, default=uuid4, primary_key=True
+    ),
+    sa.Column("customer", UUID(as_uuid=True)),
+)
