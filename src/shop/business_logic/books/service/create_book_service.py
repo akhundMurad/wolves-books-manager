@@ -1,20 +1,16 @@
 from datetime import datetime
-from uuid import uuid4
 
-from book_manager.business_logic.protocols.database_client import DatabaseClientProtocol
-from book_manager.business_logic.protocols.producer import ProducerProtocol
+from shop.business_logic.protocols.database_client import DatabaseClientProtocol
 
 
 class CreateBookService:
-    def __init__(
-        self, database_client: DatabaseClientProtocol, producer: ProducerProtocol
-    ) -> None:
+    def __init__(self, database_client: DatabaseClientProtocol) -> None:
         self._database_client = database_client
-        self._producer = producer
 
     async def execute(
         self,
         *,
+        id: str,
         title: str,
         description: str,
         author_full_name: str,
@@ -23,7 +19,7 @@ class CreateBookService:
     ) -> None:
         async with self._database_client as db:
             book = dict(
-                id=uuid4(),
+                id=id,
                 title=title,
                 description=description,
                 genre=genre,
@@ -38,5 +34,3 @@ class CreateBookService:
             await db.execute(statement, **book)
 
             await db.commit()
-
-            await self._producer.publish(message=book, exchange_name="books")

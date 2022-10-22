@@ -26,6 +26,7 @@ books = sa.Table(
 
 
 ordered_books = sa.Table(
+    "ordered_books",
     metadata,
     sa.Column("book_id", sa.ForeignKey("books.id")),
     sa.Column("order_id", sa.ForeignKey("orders.id")),
@@ -33,6 +34,7 @@ ordered_books = sa.Table(
 
 
 orders = sa.Table(
+    "orders",
     metadata,
     sa.Column(
         "id", UUID(as_uuid=True), nullable=False, default=uuid4, primary_key=True
