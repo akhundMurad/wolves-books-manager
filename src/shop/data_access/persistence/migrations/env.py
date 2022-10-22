@@ -8,14 +8,14 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from alembic import context
 
-from src.config import DatabaseConfig
+from shop.config import DatabaseConfig
 
 config = context.config
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-from src.data_access.persistence.tables import metadata
+from shop.data_access.persistence.tables import metadata
 
 target_metadata = metadata
 

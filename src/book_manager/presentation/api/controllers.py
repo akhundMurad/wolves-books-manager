@@ -3,7 +3,7 @@ from blacksheep import Response, FromJSON
 from blacksheep.server.authorization import auth
 from pydantic import BaseModel
 
-from src.business_logic.create_book_service import CreateBookService
+from book_manager.business_logic.create_book_service import CreateBookService
 
 
 class CreateBook(BaseModel):

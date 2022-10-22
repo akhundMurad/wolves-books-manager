@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.business_logic.protocols.database_client import DatabaseClientProtocol
+from book_manager.business_logic.protocols.database_client import DatabaseClientProtocol
 
 
 class CreateBookService:

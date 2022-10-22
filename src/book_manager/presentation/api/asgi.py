@@ -3,10 +3,10 @@ from blacksheep.server.openapi.v3 import OpenAPIHandler
 from guardpost import Policy
 from guardpost.common import AuthenticatedRequirement
 from openapidocs.v3 import Info
-from src.presentation.api.auth import JWTAuthHandler
+from book_manager.presentation.api.auth import JWTAuthHandler
 
-from src.presentation.api.controllers import Books  # noqa
-from src.di.container import get_container
+from book_manager.presentation.api.controllers import Books  # noqa
+from book_manager.di.container import get_container
 
 
 def build_application() -> Application:

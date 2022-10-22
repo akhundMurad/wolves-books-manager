@@ -2,11 +2,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine, create_async_engine
 from rodi import GetServiceContext
 
-from src.business_logic.create_book_service import CreateBookService
-from src.business_logic.protocols.database_client import DatabaseClientProtocol
-from src.config import DatabaseConfig, JWTConfig
-from src.data_access.persistence.database_client import DatabaseClient
-from src.presentation.api.auth import JWTManager
+from book_manager.business_logic.create_book_service import CreateBookService
+from book_manager.business_logic.protocols.database_client import DatabaseClientProtocol
+from book_manager.config import DatabaseConfig, JWTConfig
+from book_manager.data_access.persistence.database_client import DatabaseClient
+from book_manager.presentation.api.auth import JWTManager
 
 
 def build_database_config(context: GetServiceContext) -> DatabaseConfig:

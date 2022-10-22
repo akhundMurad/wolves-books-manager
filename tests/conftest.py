@@ -2,10 +2,10 @@ from typing import Type
 import pytest
 from rodi import Container
 
-from src.business_logic.protocols.database_client import DatabaseClientProtocol
-from src.data_access.persistence.database_client import DatabaseClient
-from src.di.container import get_container
-from src.config import DatabaseConfig
+from book_manager.business_logic.protocols.database_client import DatabaseClientProtocol
+from book_manager.data_access.persistence.database_client import DatabaseClient
+from book_manager.di.container import get_container
+from book_manager.config import DatabaseConfig
 
 
 @pytest.fixture
