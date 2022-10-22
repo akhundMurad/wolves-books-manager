@@ -1,11 +1,13 @@
 from datetime import datetime
 
 from book_manager.business_logic.protocols.database_client import DatabaseClientProtocol
+from book_manager.business_logic.protocols.producer import ProducerProtocol
 
 
 class CreateBookService:
-    def __init__(self, database_client: DatabaseClientProtocol) -> None:
+    def __init__(self, database_client: DatabaseClientProtocol, producer: ProducerProtocol) -> None:
         self._database_client = database_client
+        self._producer = producer
 
     async def execute(
         self,
@@ -17,12 +19,7 @@ class CreateBookService:
         price: float
     ) -> None:
         async with self._database_client as db:
-            statement = """
-            INSERT INTO books(title, description, author_full_name, genre, price, created_at)
-            VALUES(:title, :description, :author_full_name, :genre, :price, :created_at)
-            """
-            await db.execute(
-                statement,
+            book = dict(
                 title=title,
                 description=description,
                 genre=genre,
@@ -30,5 +27,18 @@ class CreateBookService:
                 price=price,
                 created_at=datetime.utcnow(),
             )
+            statement = """
+            INSERT INTO books(title, description, author_full_name, genre, price, created_at)
+            VALUES(:title, :description, :author_full_name, :genre, :price, :created_at)
+            """
+            await db.execute(
+                statement,
+                **book
+            )
 
             await db.commit()
+
+            await self._producer.publish(
+                message=book,
+                exchange_name="books"
+            )
