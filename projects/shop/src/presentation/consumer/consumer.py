@@ -1,10 +1,13 @@
 import asyncio
 import logging
+from tenacity import retry
+from tenacity.stop import stop_after_attempt
 
 from src.di.container import get_container
 from src.business_logic.protocols.consumer import ConsumerProtocol
 
 
+@retry(stop=stop_after_attempt(3))
 async def consume() -> None:
     logging.basicConfig(level=logging.INFO)
 

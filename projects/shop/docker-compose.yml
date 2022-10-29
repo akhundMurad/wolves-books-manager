@@ -1,0 +1,63 @@
+services:
+  shop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    restart: always
+    command: sh -c "alembic upgrade head && uvicorn src.presentation.api.asgi:asgi --host 0.0.0.0 --port 8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://backend:backend@shop_database:5432/shop
+      - MESSAGE_BROKER_URL=amqp://guest:guest@shop_rabbitmq:5672
+    depends_on:
+      - shop_database
+      - shop_rabbitmq
+
+  shop_database:
+    image: postgres:14-alpine
+    restart: unless-stopped
+    container_name: shop_database
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=shop
+      - POSTGRES_USER=backend
+      - POSTGRES_PASSWORD=backend
+      - POSTGRES_HOST=shop_database
+      - POSTGRES_PORT=5432
+    volumes:
+      - shop_database:/var/lib/postgresql/data
+
+  shop_rabbitmq:
+    image: rabbitmq:3.11.2-alpine
+    restart: always
+    container_name: shop_rabbitmq
+    ports:
+      - "5672:5672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 15s
+      timeout: 30s
+      retries: 5
+
+  shop_consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    command: sh -c "python -m src.presentation.consumer.consumer"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://backend:backend@shop_database:5432/shop
+      - MESSAGE_BROKER_URL=amqp://guest:guest@shop_rabbitmq:5672
+    depends_on:
+      shop_rabbitmq:
+        condition: service_healthy
+      shop_database:
+        condition: 
+      shop:
+        condition: 
+
+
+volumes:
+  shop_database:

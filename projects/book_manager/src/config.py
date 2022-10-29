@@ -2,9 +2,7 @@ from pydantic import BaseSettings
 
 
 class DatabaseConfig(BaseSettings):
-    DATABASE_URL: str = (
-        "postgresql+asyncpg://postgres:password@postgres:5432/books_sample"
-    )
+    DATABASE_URL: str
 
 
 class JWTConfig(BaseSettings):
@@ -13,4 +11,4 @@ class JWTConfig(BaseSettings):
 
 
 class MessageBrokerConfig(BaseSettings):
-    CONNECTION_STRING: str = "amqp://guest:guest@rabbitmq:5672/"
+    MESSAGE_BROKER_URL: str

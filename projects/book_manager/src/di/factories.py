@@ -1,4 +1,3 @@
-from aio_pika import Connection, connect
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncEngine, create_async_engine
 from rodi import GetServiceContext
@@ -57,4 +56,4 @@ def build_jwt_manager(context: GetServiceContext) -> JWTManager:
 def build_rabbitmq_producer(context: GetServiceContext) -> Producer:
     config: MessageBrokerConfig = context.provider[MessageBrokerConfig]
 
-    return Producer(connection_string=config.CONNECTION_STRING)
+    return Producer(connection_string=config.MESSAGE_BROKER_URL)

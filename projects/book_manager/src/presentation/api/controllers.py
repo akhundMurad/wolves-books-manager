@@ -15,7 +15,7 @@ class CreateBook(BaseModel):
 
 
 class Books(APIController):
-    # @auth("authenticated")
+    @auth("authenticated")
     @post("/")
     async def create_book(
         self, body: FromJSON[CreateBook], service: CreateBookService

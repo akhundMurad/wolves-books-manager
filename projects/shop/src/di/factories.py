@@ -45,7 +45,7 @@ def build_rabbitmq_consumer(context: GetServiceContext) -> Consumer:
     config: MessageBrokerConfig = context.provider[MessageBrokerConfig]
     service: CreateBookService = context.provider[CreateBookService]
 
-    return Consumer(connection_string=config.CONNECTION_STRING, service=service)
+    return Consumer(connection_string=config.MESSAGE_BROKER_URL, service=service)
 
 
 def build_create_order_service(context: GetServiceContext) -> CreateOrderService:
