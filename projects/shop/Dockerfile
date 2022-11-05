@@ -14,9 +14,12 @@ RUN apk add --no-cache jpeg-dev postgresql-libs && \
     cargo \
     build-base
 
-
 WORKDIR /code
 
 COPY . /code/
+
+
+RUN sed -i 's/\r$//g' /code/entrypoint.shop.sh
+RUN chmod +x /code/entrypoint.shop.sh
 
 RUN pip install -r requirements.txt
