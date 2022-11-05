@@ -2,9 +2,8 @@ name: CI
 
 on:
   push:
-    branches: [develop]
-    types: 
-      - completed
+    branches: 
+      - develop
 
 env:
   REPO_URL: https://github.com/akhundMurad/wolves-books-manager.git
