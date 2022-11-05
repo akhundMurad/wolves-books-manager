@@ -1,0 +1,36 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  REPO_URL: https://github.com/akhundMurad/wolves-books-manager.git
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs: build_and_push
+
+    steps:
+      - name: Deploy to Digital Ocean droplet via SSH action
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.DEPLOYMENT_SERVER_IP }}  # Secret IP Server
+          username: ${{ secrets.DEPLOYMENT_SERVER_USER }}  # Secret IP Login
+          password: ${{ secrets.DEPLOYMENT_SERVER_PASSWORD }}  # Secret IP Password
+          script: |
+            if [ -d .git ]; then
+              git pull https://github.com/akhundMurad/wolves-books-manager.git
+            else
+              git clone https://github.com/akhundMurad/wolves-books-manager.git 
+            fi
+
+            docker compose down
+            docker system prune --all
+
+            docker compose -f projects/shop/docker-compose.yml up -d
+            
