@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  workflow_run:
+  deploy:
     branches: [develop]
     types: 
       - completed
